@@ -1,13 +1,20 @@
-project(weather)
+project(weather_app)
 
-add_library(${PROJECT_NAME} parser.h parser.cpp)
+add_library(${PROJECT_NAME}
+        back/configurator/ConfigParser.h
+        back/utils/Exceptions.h
+        back/core/Core.h
+        back/core/Settings.h
+        back/core/CityElement.h
+        back/core/ChordsRequester.h
+        back/core/ForecastRequester.h
+        back/configurator/ConfigParser.cpp
+        back/core/Core.cpp
+        back/core/ChordsRequester.cpp
+        back/core/ForecastRequester.cpp
+)
 
 # Fetch CPR
-
-if(WIN32) # Install dlls in the same directory as the executable on Windows
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-endif()
 
 include(FetchContent)
 

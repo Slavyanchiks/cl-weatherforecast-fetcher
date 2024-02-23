@@ -1,0 +1,34 @@
+{
+  "reload_setup" : {
+    "enable_intentional_reload" : true,
+    "default_reload_time" : 3600
+  },
+
+  "forecast_setup" : {
+    "daily_forecast" : {
+      "amount_of_days" : 7,
+      "parameters" : [
+        "temperature_2m_max",
+        "temperature_2m_min",
+        "precipitation_sum",
+        "weather_code"
+      ]
+    },
+
+    "hourly_forecast" : {
+      "parameters" : [
+        "temperature_2m",
+        "apparent_temperature"
+      ]
+    }
+  },
+
+  "cities" : [
+    "Moscow",
+    "London",
+    "Los Angeles",
+    "Saint Petersburg"
+  ],
+
+  "ninja_api_key" : "XEnAw2bO5S0nNvXJxP/l6A==asoHHuS5RIXfV3UA"
+}

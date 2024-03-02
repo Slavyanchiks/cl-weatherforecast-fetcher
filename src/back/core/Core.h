@@ -13,6 +13,7 @@
 
 #include "ChordsRequester.h"
 #include "ForecastRequester.h"
+#include "../configurator/ConfigParser.h"
 
 namespace Core {
 
@@ -34,5 +35,11 @@ namespace Core {
 }
 
 namespace WeatherApp {
+    void ConfigureApp();
 
+    void GetChords(std::map<std::string, Core::CityElement>& cities);
+
+    bool ReloadForecast(std::map<std::string, Core::CityElement>& cities);
+
+    void TimeReload(std::time_t &first_frame, Core::Core &core);
 }

@@ -8,10 +8,12 @@ add_library(${PROJECT_NAME}
         back/core/CityElement.h
         back/core/ChordsRequester.h
         back/core/ForecastRequester.h
+        front/CityElementUI.h
         back/configurator/ConfigParser.cpp
         back/core/Core.cpp
         back/core/ChordsRequester.cpp
         back/core/ForecastRequester.cpp
+        front/CityElementUI.cpp
 )
 
 # Fetch CPR

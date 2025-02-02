@@ -7,15 +7,11 @@ std::map<std::string, Core::CityElement> &Core::Core::GetCollection() {
 }
 
 void Core::Core::ConfigureSettings(nlohmann::json data) {
-    auto enablereload_p = "/reload_setup/enable_intentional_reload"_json_pointer;
     auto defaultreloadtime_p = "/reload_setup/default_reload_time"_json_pointer;
-    auto amountofdays_p = "/forecast_setup/daily_forecast/amount_of_days"_json_pointer;
 
     auto citiesnames_p = "/cities"_json_pointer;
 
-    settings_.EnableIntentionalReload = data.at(enablereload_p).get<bool>();
     settings_.DefaultReloadTime = data.at(defaultreloadtime_p).get<int>();
-    settings_.AmountOfDays = data.at(amountofdays_p).get<int>();
 
     for (int i = 0; i < data.at(citiesnames_p).size(); ++i) {
         settings_.CitiesNames.push_back(data.at(citiesnames_p).at(i).get<std::string>());
@@ -36,3 +32,30 @@ Core::Core::Core() {
     GenerateCollection();
 }
 
+// WeatherApp operative functions implementation
+
+void WeatherApp::ConfigureApp() {
+    ConfigParser cfg;
+
+    Core::Core::ConfigureSettings(cfg.ParseConfig());
+    Core::ChordsRequester::SetApiKey(cfg.ParseConfig());
+    Core::ForecastRequester::SetParameters(cfg.ParseConfig());
+}
+
+void WeatherApp::GetChords(std::map<std::string, Core::CityElement>& cities) {
+    Core::ChordsRequester requester;
+    requester.RequestChords(cities);
+}
+
+bool WeatherApp::ReloadForecast(std::map<std::string, Core::CityElement> &cities) {
+    Core::ForecastRequester requester;
+    return requester.RequestForecast(cities);
+}
+
+void WeatherApp::TimeReload(std::time_t &first_frame, Core::Core &core) {
+
+    if (std::time(nullptr) - first_frame > Core::Core::settings_.DefaultReloadTime) {
+        first_frame = std::time(nullptr);
+        WeatherApp::ReloadForecast(core.GetCollection());
+    }
+}

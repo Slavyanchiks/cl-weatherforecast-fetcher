@@ -1,7 +1,8 @@
 #include "ForecastRequester.h"
 
-std::vector<std::string> Core::ForecastRequester::daily_parameters_;
-std::vector<std::string> Core::ForecastRequester::hourly_parameters_;
+std::vector<std::string> Core::ForecastRequester::daily_parameters_ = {"weather_code"};
+std::vector<std::string> Core::ForecastRequester::hourly_parameters_ = {"weather_code"};
+int Core::ForecastRequester::amount_of_days_on_forecast_ = 7;
 
 namespace {
 
@@ -49,6 +50,7 @@ namespace {
 void Core::ForecastRequester::SetParameters(nlohmann::json data) {
     auto dailyparams_p = "/forecast_setup/daily_forecast/parameters"_json_pointer;
     auto hourlyparams_p = "/forecast_setup/hourly_forecast/parameters"_json_pointer;
+    auto amount_of_days_p = "/forecast_setup/amount_of_days"_json_pointer;
 
     for (int i = 0; i < data.at(dailyparams_p).size(); ++i) {
         daily_parameters_.push_back(data.at(dailyparams_p).at(i).get<std::string>());
@@ -57,6 +59,8 @@ void Core::ForecastRequester::SetParameters(nlohmann::json data) {
     for (int i = 0; i < data.at(hourlyparams_p).size(); ++i) {
         hourly_parameters_.push_back(data.at(hourlyparams_p).at(i).get<std::string>());
     }
+
+    amount_of_days_on_forecast_ = data.at(amount_of_days_p).get<int>();
 }
 
 bool Core::ForecastRequester::RequestForecast(std::map<std::string, CityElement> &collection) {
@@ -67,7 +71,8 @@ bool Core::ForecastRequester::RequestForecast(std::map<std::string, CityElement>
 
     for (auto& [city_name, city_element] : collection) {
         cpr::Parameters params{{"latitude", std::to_string(city_element.latitude_)},
-                               {"longitude", std::to_string(city_element.longitude_)}};
+                               {"longitude", std::to_string(city_element.longitude_)},
+                               {"forecast_days", std::to_string(amount_of_days_on_forecast_)}};
         GenerateRequestParameters(params);
         session.SetParameters(params);
 
@@ -81,4 +86,8 @@ bool Core::ForecastRequester::RequestForecast(std::map<std::string, CityElement>
     }
 
     return true;
+}
+
+void Core::ForecastRequester::IncreaseAmountOfDays() {
+    if (amount_of_days_on_forecast_ < 16) ++amount_of_days_on_forecast_;
 }

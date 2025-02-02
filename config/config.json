@@ -1,17 +1,16 @@
 {
   "reload_setup" : {
-    "enable_intentional_reload" : true,
     "default_reload_time" : 3600
   },
 
   "forecast_setup" : {
+    "amount_of_days" : 7,
+
     "daily_forecast" : {
-      "amount_of_days" : 7,
       "parameters" : [
         "temperature_2m_max",
         "temperature_2m_min",
-        "precipitation_sum",
-        "weather_code"
+        "precipitation_sum"
       ]
     },
 

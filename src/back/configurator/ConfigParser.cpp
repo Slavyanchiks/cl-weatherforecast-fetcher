@@ -30,7 +30,3 @@ nlohmann::json ConfigParser::ParseConfig() {
     std::ifstream in(current_config);
     return nlohmann::json::parse(in);
 }
-
-void ConfigParser::ValidateConfigValues() {
-    //TODO validation of values - use throws and create exceptions
-}

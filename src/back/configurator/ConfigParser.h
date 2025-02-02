@@ -18,8 +18,6 @@ public:
 
     bool CheckConfig();
 
-    void ValidateConfigValues();
-
     nlohmann::json ParseConfig();
 
     explicit ConfigParser(const std::string& config_name);

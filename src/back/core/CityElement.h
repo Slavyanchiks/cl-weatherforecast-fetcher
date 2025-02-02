@@ -8,22 +8,16 @@ namespace Core {
         float latitude_;
         float longitude_;
 
-        int days_on_forecast_;
-
         nlohmann::json daily_;
         nlohmann::json hourly_;
 
-        CityElement(int days_on_forecast) {
+        CityElement() {
             daily_ = nlohmann::basic_json();
             hourly_ = nlohmann::basic_json();
-
-            days_on_forecast_ = days_on_forecast;
 
             latitude_ = 0;
             longitude_ = 0;
         }
-
-        CityElement() : CityElement(7) {}
     };
 
 } // Core ns
